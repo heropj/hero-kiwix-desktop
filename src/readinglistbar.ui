@@ -90,7 +90,7 @@
       <enum>QAbstractScrollArea::AdjustToContents</enum>
      </property>
      <property name="textElideMode">
-      <enum>Qt::ElideNone</enum>
+      <enum>Qt::ElideRight</enum>
      </property>
      <property name="isWrapping" stdset="0">
       <bool>false</bool>
