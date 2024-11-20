@@ -15,6 +15,17 @@ ReadingListBar::ReadingListBar(QWidget *parent) :
     ui(new Ui::readinglistbar)
 {
     ui->setupUi(this);
+
+    // Set the font to match TableOfContentBar's font (Selawik with size 18 and 12)
+    ui->label->setFont(QFont("Selawik", 18, QFont::Weight::Medium));  // Title label font
+    ui->label->setText(gt("reading-list-title"));
+
+    ui->hideLabel->setFont(QFont("Selawik", 12));  // Hide label font (adjust this as needed)
+    
+    // Setting the font for the listWidget items as well
+    ui->listWidget->setStyleSheet("QListWidget::item { font: 12pt 'Selawik'; }");
+
+    // Connect actions to slots
     connect(KiwixApp::instance()->getLibrary(), &Library::bookmarksChanged,
             this, &ReadingListBar::setupList);
     connect(ui->listWidget, &QListWidget::itemClicked,
@@ -37,8 +48,8 @@ ReadingListBar::ReadingListBar(QWidget *parent) :
     auto importAction = app->getAction(KiwixApp::ImportReadingListAction);
     connect(exportAction, &QAction::triggered, this, &ReadingListBar::onExport);
     connect(importAction, &QAction::triggered, this, &ReadingListBar::onImport);
-    ui->label->setText(gt("reading-list-title"));
 
+    // Set up menu button
     QMenu *portMenu = new QMenu(this);
     portMenu->addAction(exportAction);
     portMenu->addAction(importAction);
