@@ -15,6 +15,8 @@ ReadingListBar::ReadingListBar(QWidget *parent) :
     ui(new Ui::readinglistbar)
 {
     ui->setupUi(this);
+    ui->titleLabel->setText(gt("reading-list-title"));//reading-list-title
+    
     connect(KiwixApp::instance()->getLibrary(), &Library::bookmarksChanged,
             this, &ReadingListBar::setupList);
     connect(ui->listWidget, &QListWidget::itemClicked,
@@ -37,7 +39,6 @@ ReadingListBar::ReadingListBar(QWidget *parent) :
     auto importAction = app->getAction(KiwixApp::ImportReadingListAction);
     connect(exportAction, &QAction::triggered, this, &ReadingListBar::onExport);
     connect(importAction, &QAction::triggered, this, &ReadingListBar::onImport);
-    ui->label->setText(gt("reading-list-title"));
 
     QMenu *portMenu = new QMenu(this);
     portMenu->addAction(exportAction);

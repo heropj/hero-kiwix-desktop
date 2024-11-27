@@ -122,7 +122,7 @@ ZimItemWidget QRadioButton::indicator:checked {
 }
 
 TopWidget QToolButton:pressed,
-TopWidget QToolButton::hover {
+TopWidget QToolButton:hover {
     border: 1px solid #3366CC;
     background-color: #D9E9FF;
     border-radius: 3px;
@@ -352,8 +352,7 @@ QTabBar::scroller {
 }
 
 #categorySelector QScrollBar::handle,
-#languageSelector QScrollBar::handle,
-#readinglistbar QScrollBar {
+#languageSelector QScrollBar::handle{
     background-color: grey;
 }
 
@@ -369,99 +368,98 @@ ContentTypeFilter {
     spacing: 10;
 }
 
-#readinglistbar QLabel {
+/* General Style Improvements */
+#readinglistbar, #tableofcontentbar {
+    border-radius: 8px;
+    padding: 8px;
+}
+
+/* Title Label Styling */
+#readinglistbar #titleLabel, #tableofcontentbar #titleLabel {
     font-size: 24px;
     font-weight: bold;
+    color: #333333;
+    margin: 10px;
     padding: 5px;
 }
 
-#readinglistbar QListWidget {
-    show-decoration-selected: 0;
+/* Common List Styling for QListWidget and QTreeWidget */
+#readinglistbar QListWidget, #tableofcontentbar QTreeWidget {
     border: none;
-    padding: 5px;
+    outline: none;
 }
 
-#readinglistbar QListWidget::item {
+/* List Items Default Style */
+#readinglistbar QListWidget::item, #tableofcontentbar QTreeWidget::item {
     font-size: 16px;
-    margin-bottom: 10px;
+    color: #333333; 
+    height: 32px;
+    padding: 5px 10px;
+    border-bottom: 1px solid #E0E0E0; 
 }
 
-#readinglistbar QPushButton {
+
+#readinglistbar QListWidget::item:hover, #tableofcontentbar QTreeWidget::item:hover {
+    background-color: #F1F8FF; 
+    color: #333333;
+    border: none;
+}
+
+/* Scrollbar Styling */
+#readinglistbar QScrollBar, #tableofcontentbar QScrollBar {
+    width: 8px;
+    border: none;
+}
+
+#readinglistbar QScrollBar::handle, #tableofcontentbar QScrollBar::handle {
+    background-color: #CCCCCC; 
+    border-radius: 4px;
+}
+
+#readinglistbar QScrollBar::handle:hover, #tableofcontentbar QScrollBar::handle:hover {
+    background-color: #999999; 
+}
+
+/* Buttons Styling */
+#readinglistbar QPushButton, #tableofcontentbar QPushButton {
+    font-size: 14px;
+    padding: 5px;
     margin-left: 4px;
+    background-color: #FFFFFF; 
+    color: #333333; 
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
 }
 
-#readinglistbar QPushButton::hover {
-    border: 1px solid #3366CC;
-    background-color: #D9E9FF;
-    border-radius: 3px;
+#readinglistbar QPushButton:hover, #tableofcontentbar QPushButton:hover {
+    border: 1px solid #3366CC; 
+    background-color: #D9E9FF; 
 }
 
-#readinglistbar QPushButton::menu-indicator {
-    width: 0;
-    height: 0;
+/* Hide Label Styling */
+#tableofcontentbar #hideLabel {
+    margin: 13px 10px 10px;
+    font-size: 14px;
+    color: #555555;
 }
-
-#tableofcontentbar {
-    background-color: white;
-}
-
-#tableofcontentbar QTreeWidget,
-#tableofcontentbar QLabel,
-#tableofcontentbar QFrame {
-    background-color: white;
-}
-
-#tableofcontentbar QTreeWidget {
-    outline: none;
-}
-
-#tableofcontentbar QTreeWidget::item {
-    height: 26px;
-    padding: 0px 10px;
-    outline: none;
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-}
-
-#tableofcontentbar QTreeWidget::item:selected,
-#tableofcontentbar QTreeWidget::item:hover {
-    outline: none;
-    border-top: 1px solid #3366CC;
-    border-bottom: 1px solid #3366CC;
-    background-color: #D9E9FF;
-    color: black;
-}
-
-#tableofcontentbar QTreeWidget::branch:selected,
-#tableofcontentbar QTreeWidget::branch:hover {
-    outline: none;
-    border-top: 1px solid #3366CC;
-    border-bottom: 1px solid #3366CC;
-    background-color: #D9E9FF;
-}
-
 #tableofcontentbar QTreeWidget::branch {
     image: none;
+    width: 0px;
+    height: 0px;
+}
+#readinglistbar QPushButton::menu-indicator {
+    width: 0px;
+    height: 0px;
 }
 
-#tableofcontentbar #titleLabel {
+/* To remove extra padding and margin*/
+#tableofcontentbar {
     padding: 0px;
-    margin: 10px;
+    margin: 0px;
+    
 }
 
-#tableofcontentbar #hideLabel {
-    margin: 13px 10px 10px; /* 3px to match bottom with titleLabel */ 
-}
 
-#tableofcontentbar QScrollBar {
-    width: 5px;
-    border: none;
-    outline: none;
-}
-
-#tableofcontentbar QScrollBar::handle {
-    background-color: grey;
-}
 
 /* ----------------------------------------
     Text to Speech Page

@@ -9,10 +9,7 @@ TableOfContentBar::TableOfContentBar(QWidget *parent) :
     ui(new Ui::tableofcontentbar)
 {
     ui->setupUi(this);
-    ui->titleLabel->setFont(QFont("Selawik", 18, QFont::Weight::Medium));
     ui->titleLabel->setText(gt("table-of-content"));
-    ui->hideLabel->setFont(QFont("Selawik", 12));
-    ui->hideLabel->setTextFormat(Qt::RichText);
 
     /* href is needed to make hide clickable, but not used. So Kiwix it is :) */
     ui->hideLabel->setText("<a href=\"https://kiwix.org/en/\">" + gt("hide") + "</a>");
