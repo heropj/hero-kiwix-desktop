@@ -15,6 +15,16 @@ ReadingListBar::ReadingListBar(QWidget *parent) :
     ui(new Ui::readinglistbar)
 {
     ui->setupUi(this);
+
+    //to remove gap between RL components
+    if (layout()) {
+        layout()->setContentsMargins(0, 0, 0, 0);
+        layout()->setSpacing(0);
+    }
+
+    ui->titleLabel->setFont(QFont("Selawik", 18, QFont::Weight::Medium));
+    ui->titleLabel->setText(gt("reading-list"));
+
     connect(KiwixApp::instance()->getLibrary(), &Library::bookmarksChanged,
             this, &ReadingListBar::setupList);
     connect(ui->listWidget, &QListWidget::itemClicked,
@@ -37,7 +47,6 @@ ReadingListBar::ReadingListBar(QWidget *parent) :
     auto importAction = app->getAction(KiwixApp::ImportReadingListAction);
     connect(exportAction, &QAction::triggered, this, &ReadingListBar::onExport);
     connect(importAction, &QAction::triggered, this, &ReadingListBar::onImport);
-    ui->label->setText(gt("reading-list-title"));
 
     QMenu *portMenu = new QMenu(this);
     portMenu->addAction(exportAction);

@@ -197,6 +197,7 @@ void MainWindow::tableOfContentToggled(bool state)
     if (state) {
         checkActionNoSignal(KiwixApp::ToggleReadingListAction, false);
         mp_ui->sideBar->setCurrentWidget(mp_ui->tableofcontentbar);
+        mp_ui->sideBar->setStyleSheet("background-color: white;");
         mp_ui->sideBar->show();
     }
     else {
