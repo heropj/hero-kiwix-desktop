@@ -11,17 +11,10 @@
 const QString documentsDir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 
 ReadingListBar::ReadingListBar(QWidget *parent) :
-    QWidget(parent),
+    QFrame(parent),
     ui(new Ui::readinglistbar)
 {
     ui->setupUi(this);
-
-    //to remove gap between RL components
-    if (layout()) {
-        layout()->setContentsMargins(0, 0, 0, 0);
-        layout()->setSpacing(0);
-    }
-
     ui->titleLabel->setFont(QFont("Selawik", 18, QFont::Weight::Medium));
     ui->titleLabel->setText(gt("reading-list"));
 

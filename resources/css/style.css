@@ -430,6 +430,11 @@ ContentTypeFilter {
     background-color: grey;
 }
 
+/*this selector worked after changing class ReadingListBar to a QFrame instead of QWidget in readinglistbar.h file*/
+#readinglistbar {
+    background-color: white;
+}
+
 #readinglistbar QPushButton::menu-indicator {
     width: 0;
     height: 0;
