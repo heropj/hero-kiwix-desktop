@@ -101,10 +101,12 @@ public:
     void saveListOfOpenTabs();
     void saveWindowState();
     void saveVoiceName(const QString& langName, const QString& voiceName);
+    void saveTtsSpeed(const QString& langName, double speed);
     void restoreWindowState();
     void saveCurrentTabIndex();
     void savePrevSaveDir(const QString& prevSaveDir);
     QString getSavedVoiceName(const QString& langName) const;
+    double getSavedTtsSpeed(const QString& langName) const;
     QString getPrevSaveDir() const;
     void restoreTabs();
     void setupDirectoryMonitoring();

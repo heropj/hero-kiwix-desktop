@@ -21,6 +21,7 @@ TextToSpeechBar::TextToSpeechBar(QWidget *parent)
     connect(ui->closeButton, &QPushButton::pressed,
                 this, &TextToSpeechBar::speechClose);
 
+    setupSpeedOptionsComboBox();
     setupVoiceComboBox();
     setupLanguageComboBox();
     languageSelected(ui->langComboBox->currentIndex());
@@ -28,6 +29,36 @@ TextToSpeechBar::TextToSpeechBar(QWidget *parent)
             this, &TextToSpeechBar::toggleLanguage);
     connect(app->getAction(KiwixApp::ToggleTTSVoiceAction), &QAction::triggered,
             this, &TextToSpeechBar::toggleVoice);
+    connect(ui->speedComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &TextToSpeechBar::onSpeedChanged);
+
+//keyboard shortcuts to control speed of tts
+QAction* increaseSpeedAction = new QAction(this);
+increaseSpeedAction->setShortcut(QKeySequence("Shift+."));
+connect(increaseSpeedAction, &QAction::triggered, this, &TextToSpeechBar::increaseSpeed);
+
+QAction* decreaseSpeedAction = new QAction(this);
+decreaseSpeedAction->setShortcut(QKeySequence("Shift+,"));
+connect(decreaseSpeedAction, &QAction::triggered, this, &TextToSpeechBar::decreaseSpeed);
+
+this->addAction(increaseSpeedAction);
+this->addAction(decreaseSpeedAction);
+}
+
+void TextToSpeechBar::increaseSpeed() {
+    int currentIndex = ui->speedComboBox->currentIndex();
+    if (currentIndex < ui->speedComboBox->count() - 1) {
+        ui->speedComboBox->setCurrentIndex(currentIndex + 1);
+        onSpeedChanged(currentIndex + 1);
+    }
+}
+
+void TextToSpeechBar::decreaseSpeed() {
+    int currentIndex = ui->speedComboBox->currentIndex();
+    if (currentIndex > 0) {
+        ui->speedComboBox->setCurrentIndex(currentIndex - 1);
+        onSpeedChanged(currentIndex - 1);
+    }
 }
 
 void TextToSpeechBar::speak(const QString &text)
@@ -52,6 +83,16 @@ void TextToSpeechBar::setLocale(const QLocale& locale)
             return;
         }
     }
+}
+
+void TextToSpeechBar::setupSpeedOptionsComboBox()
+{
+    ui->speedLabel->setText(gt("speed"));
+    ui->speedComboBox->setMaxVisibleItems(10);
+    ui->speedComboBox->setLineEdit(new ComboBoxLineEdit(ui->speedComboBox));
+
+    QStringList speedOptions = {"0.25","0.50","0.75","1.00","1.25","1.50","1.75","2.00"};
+    ui->speedComboBox->addItems(speedOptions);
 }
 
 void TextToSpeechBar::setupLanguageComboBox()
@@ -105,6 +146,13 @@ void TextToSpeechBar::resetVoiceComboBox()
     voiceSelected(voiceIndex);
 
     connect(ui->voiceComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &TextToSpeechBar::voiceSelected);
+}
+
+void TextToSpeechBar::resetSpeedComboBox()
+{
+    double savedSpeed = KiwixApp::instance()->getSavedTtsSpeed(m_speech.locale().name());
+    int index = (savedSpeed == 1.0) ? 3 : (savedSpeed - 0.25) * 4; //default speed: 1
+    ui->speedComboBox->setCurrentIndex(index);
 }
 
 int TextToSpeechBar::getVoiceIndex()
@@ -174,6 +222,7 @@ void TextToSpeechBar::languageSelected(int index)
     const QLocale locale = ui->langComboBox->itemData(index).toLocale();
     m_speech.setLocale(locale);
     resetVoiceComboBox();
+    resetSpeedComboBox();
 }
 
 void TextToSpeechBar::voiceSelected(int index)
@@ -201,6 +250,24 @@ void TextToSpeechBar::keyPressEvent(QKeyEvent *event)
 void TextToSpeechBar::onStateChanged(QTextToSpeech::State state)
 {
     ui->stopButton->setEnabled(state != QTextToSpeech::Ready);
+}
+
+void TextToSpeechBar::onSpeedChanged(int index)
+{
+    QString speedText = ui->speedComboBox->itemText(index);
+    double speed = speedText.toDouble();
+    m_speech.setRate(speed - 1);  // range:-1,1
+
+    // Save tts speed for current lang
+    const auto currentLang = ui->langComboBox->currentData().toLocale().name();
+    KiwixApp::instance()->saveTtsSpeed(currentLang, speed);
+
+    // Restarting the speech with new speed set above
+    if (m_speech.state() == QTextToSpeech::Speaking)
+    {
+        m_speech.stop();
+        m_speech.say(m_text);
+    }
 }
 
 ComboBoxLineEdit::ComboBoxLineEdit(QWidget *parent) : QLineEdit(parent)
